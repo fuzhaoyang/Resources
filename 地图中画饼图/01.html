@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<script src="jquery-3.2.0.js"> </script>
+		<script src="echarts-all.js"> </script>
+	</head>
+	<script type="text/javascript">
+		$(function(){
+			var myChart= echarts.init(document.getElementById("app"));
+			var aeraColorData = {		
+			"十堰市": {
+				color: "#f7e7f0",
+				redius: 20,
+				positionOffset:[-15,30],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }],
+				//data:data.rtnData[0]["十堰"]
+			},
+			"襄阳市": {
+				color: "#f2ee7b",
+				redius: 20,
+				positionOffset:[-25,20],
+				data:[{ value: 335, name: '2G' }, { value: 310, name: '3G' }, { value: 234, name: 'LET' }]
+				//data:data.rtnData[0]["襄阳"]
+			},
+			"神农架林区": {
+				color: "#f7e7f0",
+				redius: 10,
+				positionOffset:[-15,18],
+				data:[{ value: 25, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["神农架林区"]//不要饼图的信息 暂时注释掉
+			},
+			"江汉": {
+				color: "#9dbcdd",
+				redius: 12,
+				positionOffset:[-28,0],
+				data:[{ value: 25, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["江汉"]
+			},
+			"随州市": {
+				color: "#faedc5",
+				redius: 17,
+				positionOffset:[0,-25],
+				data:[{ value: 25, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["随州"]
+			},
+			"荆门市": {
+				color: "#f7e7f0",
+				redius: 15,
+				positionOffset:[35,-3],
+				data:[{ value: 25, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["荆门"]
+			},
+			"荆州市": {
+				color: "#fdfdfd",
+				//color: "red",
+				redius: 15,
+				positionOffset:[19,19],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["荆州"]
+			},
+			"孝感市": {
+				color: "#ecef9d",
+				redius: 15,
+				positionOffset:[-10,-23],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["孝感"]
+			},
+			"天门市": {
+				color: "#f2ee7a",
+				redius: 5,
+				positionOffset:[-1,0],
+				//data:data.rtnData[0]["天门"]
+			},
+			/*"潜江市": {
+				color: "#9dbcdd",
+				redius: 5,
+				positionOffset:[-1,5],
+			},*/
+			"黄冈市": {
+				color: "#f2ee7b",
+				redius: 15,
+				positionOffset:[7,30],
+				//data:data.rtnData[0]["黄冈"]
+			},
+			"武汉市": {
+				color: "#f9d6ac",
+				redius: 10,
+				positionOffset:[-5,15],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["武汉"]
+			},
+			/*"仙桃市": {
+				color: "#fdf1f7",
+				redius: 10,
+				positionOffset:[0,0],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+			},*/
+			
+			"文水县": {
+				color: "#edefa0",
+				redius: 15,
+				positionOffset:[-5,20],
+				//data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["咸宁"]
+			},
+			"鄂州市":{
+				color: "#e1b6d4",
+				redius: 5,
+				positionOffset:[-13,14],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["鄂州"]
+			},
+			"黄石市":{
+				color: "#fafcfd",
+				redius: 10,
+				positionOffset:[0,16],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["黄石"]
+			},
+			"恩施土家族苗族自治州":{
+				color: "#9dbcdd",
+				redius: 16,
+				positionOffset:[-13,23],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["恩施"]
+			},
+			"宜昌市":{
+				color: "#edefa0",
+				redius: 16,
+				positionOffset:[-8,-22],
+				data:[{ value: 1125, name: '2G' }, { value: 320, name: '3G' }]
+				//data:data.rtnData[0]["宜昌"]
+			},
+		}; //地图信息数据配置
+		var chart = mapPie(aeraColorData);
+		
+		echarts.util.mapData.params.params.none = {
+			getGeoJson: function(callback) {
+				console.log(11);
+				$.getJSON('./lvliang.json', function(data) {
+					callback(echarts.util.mapData.params.decode(data));//json 地图加载出来的方法	
+					console.log(data,111);
+				/*	var newPieData;//零时保存地图上饼图的信息
+					//循环地图上的省市,遍历地图上需要的数据
+					for(var int in data.features) {
+						var centerPos = myChart.chart.map.getPosByGeo("none", data.features[int].properties.cp); //经纬度转成平面坐标
+						var positionOff=aeraColorData[data.features[int].properties.name].positionOffset;//保存临时的位置偏移的信息
+						if(positionOff){
+							centerPos[0] = centerPos[0] + positionOff[0], centerPos[1] = centerPos[1] + positionOff[1]; //半径偏移							
+						}else{
+							centerPos[0] = centerPos[0] + 10, centerPos[1] = centerPos[1] + 10; //半径偏移	,没有设置的时候的默认值
+						}*/
+						/*console.log(aeraColorData[data.features[int].properties.name]);*/
+						/*var provinceName=data.features[int].properties.name;//获取到的省份的名字
+						var radius = aeraColorData[data.features[int].properties.name].redius; //获取半径
+						var pieData=aeraColorData[data.features[int].properties.name].data;
+						if(pieData){
+							
+							newPieData=pieData;
+						}else{
+							newPieData=[{ value: 0, name: '2G' }, { value:0, name: '3G' }, { value: 0, name: 'LTE' }]
+						}*/
+							//console.log(newPieData);
+						
+						/*	chart.series.push({
+							name: provinceName,
+							type: 'pie',
+							radius:radius,
+							center: centerPos,
+							tooltip: {
+								show: true,
+								trigger: 'item',
+								formatter: "{a} <br/>{b} : {c} ({d}%)",
+								position:function(p){
+									  	var id = document.getElementById(id);
+						                if ($(id).width() - p[0]- $(id).find("div .echarts-tooltip").width()-20 <0) {
+						                    p[0] = p[0] - $(id).find("div .echarts-tooltip").width() -10;
+						                }
+						                return [p[0], p[1]-12];
+								}
+							},
+							itemStyle: {
+								normal: {
+									color: function(e) {
+										if(e.data.name == "2G") {
+											return "#4bcdf4";
+										} else if(e.data.name == "3G") {
+											return "#f8a434"
+										} else if(e.data.name == "LTE"||e.data.name=="4G") {
+											return "#84e048";
+										};
+									},
+									label: {
+										show: false
+									},
+									labelLine: {
+										show: false
+									}
+								},
+							},
+							data: newPieData
+						})
+					}
+					myChart.setOption(chart)*/
+				});
+			}
+		};
+	myChart.refresh();
+	myChart.setOption(chart);
+	//myChart.setOption(chart);
+})
+/*@name ：mapPie
+	@class ：饼图地图
+	@constructor 
+	@param ：参数
+	@return ：option
+			*/
+function mapPie(aeraColorData){
+	var option = {
+			tooltip: {
+				trigger: 'item',				
+				formatter: '{b}'
+			},
+			series: [{
+					name: '中国',
+					type: 'map',
+					mapType: 'none',
+					selectedMode: null,
+					
+					itemStyle: {
+						normal: {
+							color: function(e) {
+								if(e.data.name=="离石区"){
+									return "pink";
+								}
+								console.log(e)
+								/*console.log(aeraColor[p.data.name]);*/
+								if(!aeraColorData[e.data.name]) {
+									aeraColorData[e.data.name] = {
+										color: "red",
+										redius: "10%"
+									}
+									return "red";
+								} else {
+									return aeraColorData[e.data.name].color
+								}
+							},
+							borderColor:"#e9c3b0",//#e5a489
+							label: {
+								show: true,
+								textStyle:{
+									color:"#000",//地图上的字体颜色
+									fontSize:"11",//字的大小
+									align:'center'
+								}
+							}
+						},
+						emphasis: {
+							label: {
+								show: true
+							}
+						}
+					},
+					
+					hoverable: false,
+					data: [{
+						name: '广东',
+						selected: true
+					}]
+				}
+			]
+		};
+	return	 option;                   
+}
+	</script>
+	<body>
+		<div id="app" style="height: 1000px;width: 1000px;border: 1px solid red;">
+			
+		</div>
+	</body>
+</html>

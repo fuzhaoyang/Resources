@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="js/echarts.js"></script>
+    <script src="echartsMap/china.js"></script>
+    <script src="css/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap.js"></script>
+</head>
+<body>
+<div class="container" style="padding:0px;">
+    <div class="row">
+        <div class="col-md-12" id="main" style="height:800px;"/>
+    </div>
+</div>
+<script type="text/javascript">
+    /* 全局变量设置 */
+    var option = {};
+    var chart = echarts.init(document.getElementById('main'));
+    var countryViewOption;
+    /*首选项 */
+    var cityViewOption;
+    var province;
+    var city;
+    /*省份钻取处理函数*/
+//    function showProvince(data) {
+//        var nameNum = jQuery.inArray(data, provincesText);
+//        /* 判断数据是否包含数据返回index */
+//        var name = provinces[nameNum];
+//        $.get('echartsMap/provinceCity/' + name + '.json', function (geoJson) {/* 地图Json文件获取 */
+//            echarts.registerMap(name, geoJson);
+//            /* 地图注册 */
+//            chart.setOption(
+//                    option = {
+//                        tooltip: {
+//                            trigger: 'item',
+//                            formatter: '{b}'
+//                        },
+//
+//                        geo: {
+//                            map: name,
+//                            animation: true,
+//                            // animationDurationUpdate: 1000,
+//                            // animationEasingUpdate: 'quinticInOut'
+//                            label: {
+//                                normal: {
+//
+//                                    show: false,
+//                                },
+//                                emphasis: {
+//                                    show: true,
+//                                }
+//                            },
+//                        },
+//                        series: [],
+//                    });
+//            cityViewOption = chart.getOption()
+//            window.onresize = chart.resize;
+//        });
+//    }
+
+    /*市级钻取处理函数*/
+    function showCity(data) {
+        $.get('echartsMap/cityTown/' + data + '.json', function (geoJson) {/* 地图Json文件获取 */
+            var hhh = 999;
+            var pp = geoJson["features"][5]["properties"]["name"] + "  ";
+            geoJson["features"][5]["properties"]["name"] = pp + '\n' + hhh + '\n' + "hellp"
+            console.log(geoJson)
+            echarts.registerMap(data, geoJson);
+            /* 地图注册 */
+
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        var value = params.value + '万人次 （' + (params.value / 98.19).toFixed(2) + '%）';
+                        return params.seriesName + '<br/>' + params.name + ' : ' + value;
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    x: 'right',
+                    y: 'center',
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                dataRange: {
+                    min: 0,
+                    max: 1000,
+                    text: ['热', '冷'],
+                    splitNumber: 0,
+                    color: ['lightblue', 'yellow', 'red']
+                },
+                series: [
+                    {
+                        name: 'zhengzhou',
+                        type: 'map',
+                        mapType: 'zhengzhou', // 自定义扩展图表类型
+                        itemStyle: {
+                            normal: {label: {show: true}},
+                            emphasis: {label: {show: true}}
+                        },
+                        data: [],
+                        // 文本位置修正
+                    }
+                ]
+            }
+            for (let i = 0; i < geoJson["features"].length; i++) {
+                var str = {
+                    name: geoJson["features"][i]["properties"]["name"],
+                    value: Math.round(Math.random() * 2000)
+                }
+                option["series"][0]["data"].push(str)
+                console.log(str.value);
+            }
+
+            chart.setOption(option)
+            window.onresize = chart.resize;
+        });
+    }
+
+
+    /*首选项*/
+    option = {
+        title: {
+            text: "基于Echarts的地图钻取(精确到县级)",
+            left: 'center',
+            top: 15,
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}'
+        },
+        series: [],
+    };
+    /*结束基础首选项*/
+
+    window.onresize = chart.resize;
+    /* 根据屏幕调整宽度 */
+    chart.setOption(option);
+    /*设置选项*/
+    countryViewOption = chart.getOption();
+    /*取得基础视图省级内容全局变量 */
+
+
+    showArea("zhengzhou")
+    function showArea(dataName) {
+        $.ajax({
+            /*判断JSON文件是否存在*/
+            url: 'echartsMap/cityTown/' + dataName + '.json',
+            async: false,
+            error: function () {
+                /*JSON文件不存在触发*/
+
+            },
+            success: function (data) {
+                var data = data["features"][0]["properties"]["cp"]
+                console.log(data);
+                /*JSON文件存在触发*/
+                city = dataName;
+                showCity(city);
+                /* 展示市级内容 */
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
