@@ -2,6 +2,7 @@
 
 linux文件搜索命令
 
+
 whereis ls
   
   -b只查找可执行的文件
