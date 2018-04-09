@@ -1,0 +1,432 @@
+
+
+linux文件搜索命令
+
+whereis ls
+  
+  -b只查找可执行的文件
+
+  echo $PATH输出环境变量的路径
+
+  whereis which who  
+
+
+
+  CSS3 animation 实现无限动画功能
+
+
+  div{
+     position:relative;
+     animation:mymove  2s infinite;
+  }
+
+  @keyframes  mymove{
+      from{
+        top:0px;
+      }
+
+     to{
+        top:200px;
+     }
+  }
+
+
+  animation-duration:规定动画所花费的时间，以秒或毫秒计算
+
+  animation-timing-function  规定动画的速度曲线
+
+  animation-delay  规定在动画之前的延迟
+
+  animation-iteration-count   规定动画应该播放的次数
+
+  animation-direction  规定是否该轮流反向播放动画
+
+  requestAnimationFrame兼容性封装
+
+	  (function() {
+	 var lastTime = 0;
+	 var vendors = ['ms', 'moz', 'webkit', 'o'];
+	 for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	  window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+	  window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+	 }
+	 
+	 if (!window.requestAnimationFrame)
+	  window.requestAnimationFrame = function(callback, element) {
+	   var currTime = new Date().getTime();
+	   var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+	   var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+	    timeToCall);
+	   lastTime = currTime + timeToCall;
+	   return id;
+	  };
+	 
+	 if (!window.cancelAnimationFrame)
+	  window.cancelAnimationFrame = function(id) {
+	   clearTimeout(id);
+	  };
+}());
+
+
+ div左边自适应右边固定宽度
+
+ 右边宽度写死右浮动，左边margin-right宽度为右侧div宽度可实现自适应
+
+ flax实现元素的居中
+ flax需要兼容IE9以下版本(弊端) 移动端用的多
+ #container{
+   display:flax;
+   justify-content:center;
+   align-items:center;
+ }
+
+ 	移动端适配用媒体查询加载不同的css
+
+	 var 声明的变量，其作用域为该语句所在的函数内，且存在变量提升现象
+	 let 声明的变量，其作用域为该语句所在的代码块内，不存在变量提升
+	 let 不允许重复声明.
+
+    一行代码实现数组的去重
+    [...new Set([1,2,2,3,5,5])]
+
+    判断对象是否相同可使用转字符串的方法来判断是否相等
+
+    前端项目性能优化
+
+    减少HTTP请求次数
+
+    减少DNS查询
+
+    使用CDN
+
+    避免重定向
+
+    图片懒加载
+
+    减少DOM元素数量
+
+    减少DOM操作
+
+    使用外部的javascrip和css
+
+    压缩 jsvascript cs  字体 图片等
+
+    优化雪碧图
+
+    使用iconfont 
+
+    字体裁剪
+
+    多域名划分内容到不同区域
+
+    尽量减少iframe的使用
+
+    避免图片src为空
+
+    脚本放在页面底部
+
+    模块开发是将js文件按照功能分离，根据需求引入不同的文件中。源于服务器端
+    export和importz在浏览器中并没有完全支持，需要和借助工具--babel,实现转换的有webpack
+
+    router 是 hash 改变 location.href 是页面跳转，刷新页面
+
+    es6提供的心得数据结构Set类似于数组，但他的成员唯一的，没有重复的值
+
+    es6提供了map数据结构。类似于对象，也是键值对的集合，单间的范围不限于字符串，各种类型的值都可以当键，是一种完善的Hash结构实现
+
+    angular4.0环境搭建
+
+    双大括号{{}}差值表达式
+
+    1  安装全局的angular-cli   npm install  -g  @angular/cli
+
+    2  ng new project(项目名字) 创建项目名   ng new route(项目名字) --routing
+
+    3   npm install 加载所需要的包
+
+    4  ng serve --open 启动服
+
+    5  ng build 打包项目文件
+
+    6  npm install -g typescript@next
+
+     npm install jquery –save
+    ng g component home(组件的名字)
+---------------------------------------
+    路由
+    Routes  路由配置，保存着那个url展示哪个组件，以及在那个RouterOutet中展示组件
+
+    RouterOutlet  在Html中标记路由内容呈现位置的占位符指令
+
+    Router  负责在运行执行路由的对象，可以通过调用其navagate()和navagateByUrl()方法来导航到一个指定的路由
+
+    RouterLink在HTML中声明导航用的指令
+
+    ActivatedRoute   当前激活的路由对象，保存着当前的路由信息，如路由地址，路由参数
+
+    理由不存在默认配置信息   {path:"**",component:Code404Component}
+
+    在路由时传递数据
+    /product?id=1&name=2 =>ActivateRoute.queryParams[id]
+
+    在查询参数中传递数据
+    {path:/product/:id} =>/product/1=>ActivatedRoute.params[id]
+
+    路由配置中传递数据
+    {path:/product,component:ProductCompoent,data[{isprod:true}]}  =>ActivatedRoute.data[0][isProd]
+
+    this.productName=this.routeInfo.snapshot.queryParams["name"]  snapshot参数快照
+
+    {path:"",redirectTo:"/home",pathMatch:"full"}  重定向路由
+
+    子路由
+
+    路由守卫 
+
+    依赖注入
+
+    控制反转
+     
+    注入器 consotructor(private  productService:ProductService){}
+
+    提供器 providers"[ProductService]
+
+    创建服务  ng g service shared(文件夹名字)/product
+
+    在模块app.moudule.ts  providers[]中注入
+
+    ALT+enter自动加载模块补全
+
+     providers:[{
+     provide:ProductService,useClass:AnotherserviceService
+     }]
+
+     使用依赖注入，使其重复使用，在重复使用的组件中@Component中使用providers
+
+    
+
+
+
+
+    angular 循环数组   *ngFor="let product of products"
+
+
+    MYSQL 基本语法
+
+    MySQL  -uroot  -proot  
+
+    show database  显示当前创建的数据库
+
+    show warnings   显示警告信息
+
+    show create database  t1;显示数据可得名字
+
+    create database if not exits  character  set gbk;创建gbk编码的数据库
+
+    ALTER  DATABASE t2 CHARACTER  SET=utf8; 修改数据库编码方式
+
+    drop database t1 ;删除数据库
+
+    mysql数据类型
+
+    整型
+
+    TINYINT  有符号  -128-127
+             无符号   0-255
+
+    int 
+
+    float
+
+    YEAR  TIME  DATE  DATETIME   TIMESTAMP 时间戳 
+
+    字符型
+
+    CHAR  
+
+    VARCHAR
+
+    TINGTEXT  TEXT MEDIUMTEXT  LONGTEXT  ENUM('value',...)  SET('value1',"value2"...)  取决于set成员的数目（最多64个成员） 
+
+    use 数据库名  打开数据库
+
+     创建数据表
+
+    create table 数据表名(
+      username   varchar(20),
+      age        tingint  unsgined，
+      salary     float(8,2)  unsigned，
+    )
+    查看数据表
+
+    show tables;显示当前数据库下的标名
+
+    show  columns from student  查看数据表的结构
+
+    AUTO_INCREMENT   自动编号，必须与主键组合使用
+    默认情况下你，其市值为1，每次增量为1
+
+    PRIMARY   KEY
+    主键唯一性not null  
+
+    UNIQUE  KEY  保证记录的唯一性，但有很多
+
+    default 默认值
+     
+    约束
+    保证数据的完整性和一致性   
+    表级约束与列级约束
+
+    修改数据表
+
+    ALTER TABLE student ALTER	NAME  SET DEFAULT "朝阳"; 设置默认值
+
+    添加主键约束
+
+    删除主键约束
+
+    ALTER TABLE tbl_name DROP PRIMARY KEY
+
+    删除唯一约束
+
+    ALTER TABLE tbl_name  REOP index_name
+
+    排序
+    SELECT	*FROM student  ORDER BY id DESC; 大到小
+    SELECT	*FROM student  ORDER BY id Asc 小到大
+
+    删除数据
+
+    DELETE	FROM student WHERE NAME="sad";
+
+    更新数据
+
+    UPDATE student SET NAME="朝阳" WHERE id =1;
+
+    group分组统计总数   COUNT, SUM, AVG等函数
+
+    SELECT id,COUNT(*)FROM student GROUP BY id;
+
+    二：as可以作为连接语句的操作符。
+	sql：create table  tablename as select * from tablename2;
+	CREATE TABLE chaoyang AS SELECT * FROM student ;
+	解释：上面语句的意思就是先获取到tablename表中的所有记录，之后创建一张tablename表，结构和tablename2表相同，记录为后面语句的查询结果。
+
+	mysql连接
+
+	near join  获取两个表中匹配关系的记录
+	left join  获取左表中的记录，哪怕右表没有匹配的元素
+	right join 与左表相反，获取右表全部数据，哪怕左表没有匹配的元素
+
+	SELECT * FROM student AS a LEFT JOIN chaoyang AS b ON a.id=b.id;  左连接
+	SELECT * FROM student AS a INNER JOIN chaoyang AS b ON a.id=b.id;  内连接
+	SELECT * FROM student AS a RIGHT JOIN chaoyang AS b ON a.id=b.id;  右连接
+
+	获取一...为结尾的数据
+
+	SELECT * from runoob_tbl  WHERE runoob_author LIKE '%COM';
+    
+
+    Java
+
+	IOC 控制反转
+
+	DI 依赖注入
+
+	目的：创建对象并组装对象之间的关系
+
+	spring  mvc  
+
+	alert +/ 智能提示
+
+	二维数组
+
+	数组类型[][] 数组名=new 数组类型[行的个数][猎德个数]
+
+    int[][] num={{1,3,4},{4,5,6}}
+
+    new 实体类调用其方法
+
+    无参无返回值void 无参带返回值int  带参返回值 String 
+
+    java 中方法被重载时，java 会根据参数的个数判断调用那个方法，参数完全匹配的将被执行
+
+    final关键字可以修饰类方法，属性和变量
+
+    final 修饰类，则该类不允许被继承
+
+    final修饰方法，则该方法不允许被覆盖
+
+    final 修饰属性则该属性不能进行隐性初始化（类的初始化必须有值）或在构造方法中赋值
+
+    只能选其一
+
+     equals() 比较的对象的引用是否是指向同一块内存地址（比内存地址）
+
+     多态 对象的多种形态  
+
+     引用多态
+
+     方法多态
+
+     @Controller和ResController的区别
+
+     @ResController注解相当于@resPonseBody+@Controller在一起的作用
+
+     1 如果只是使用@RestController注解Controller,则@Cobtroller无法返回jsp页面，配置的视图解析器InternalResourceViewResolver不起作用，返回的是return里面的内容
+
+     2 如果需要返回指定的页面，则需要用@Controller配合视图解析器InternamRessourceViewResolver才行
+
+
+     3 如果需要返回json ，xml活自定义的mediaType到页面，则需要在对应的方法上加上ResponseBody注解
+
+      jasmine是一款非常流行的测试框架,不依赖任何别的库,语法简单,本文是2.1版本的api中文指南. 运行条件 npm install -g jasmine jasmine JASMINE_CONFIG_PATH=jasmine.
+
+
+     后台重定向
+
+     @RequestMapping("/login.action")
+		public String hello(){
+			return "redirect:index.action";
+		}
+
+     <%@ taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+
+
+     数组绑定类型
+
+     public String array(String[] name )
+
+     Arrays.sort()
+
+        可以直接对基本类型（int ,char double..）数组进行大小排序，也可以对包装类型（inreger,Character,Double..）进行大小排序
+
+        Char型是根据ASCII排序的
+
+
+        
+
+        
+
+
+
+  
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
