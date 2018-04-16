@@ -150,12 +150,26 @@ whereis ls
     5  ng build 打包项目文件
 
     6  npm install -g typescript@next
-
-     npm install jquery –save
+     
+    ng -v 查看angular-cli版本
+    npm install jquery –save
+     npm install @types/jquery –save  jquery类型描述文件
+    import * as $ from'jquery'; 组件导入jquery
     ng g component home(组件的名字)
 ---------------------------------------
+   @Component()装饰器
+   Tempalte 模板
+   Controller 控制器
+   @input 输入属性可以将外部数据从父组件传到子组件
+   providers   依赖注入
+   生命周期钩子 Lifecycle Hooks 
+   styles 样式表
+   Animations 动画包
+   @output 输出属性
+   SPA单页应用开发
+   ---------------------------------------------------------
     路由
-    Routes  路由配置，保存着那个url展示哪个组件，以及在那个RouterOutet中展示组件
+    Routes  路由配置，保存着那个url展示哪个组件，以及在那个RouterOutet中展示组件 
 
     RouterOutlet  在Html中标记路由内容呈现位置的占位符指令
 
@@ -168,6 +182,7 @@ whereis ls
     理由不存在默认配置信息   {path:"**",component:Code404Component}
 
     在路由时传递数据
+    在标签中写入[queryParams]="{id:1}"
     /product?id=1&name=2 =>ActivateRoute.queryParams[id]
 
     在查询参数中传递数据
@@ -180,6 +195,74 @@ whereis ls
 
     {path:"",redirectTo:"/home",pathMatch:"full"}  重定向路由
 
+    {path:"**",component:HomeComponent} 访问不存在的路由跳转到home组件
+    ------------
+    子路由
+
+    {path:"product",component:ProductComponent,
+    children:[{
+      path:"",component:ProductdscComponent
+    },
+      {path:"saller/:id",component:SallerComponent}
+    ],canActivate:[LoginGuard]
+    },
+    
+    [routerLink]="['./']" 到当前路由的子路由
+     ------------
+    参数订阅
+    this.routeInfo.params.subscribe((params:Params)=>this.productId=params['id'])
+    --------------
+    插座
+    辅助路由
+    <a [routerLink]="[{outlets:{aux:'chat'}}]">开始聊天</a> 显示在辅助路由插座
+     <a [routerLink]="[{outlets:{aux:''}}]">结束聊天</a>显示在住插住
+    <router-outlet></router-outlet>
+    <router-outlet name="aux"></router-outlet>
+    {path:"chat",component:ChatComponent,outlet:"aux"},
+    -------------------------
+    路由守卫
+    只有当用户拥有权限才能进入
+    CanActivate:处理导航到某路由的情况
+
+    CanDeactivate:处理当前路由离开的情况
+
+    Resolve :在路由激活之前获取路由数据
+
+    import {CanActivate} from "@angular/router"
+    export class LoginGuard  implements CanActivate{
+    canActivate(){
+     let loggein:boolean=Math.random()<0.8
+     if(!loggein){
+      alert("用户未登陆")
+       }else{
+       alert("登陆成功")
+       }
+    return loggein
+       }
+     }
+    ----------------------------------
+    import {CanDeactivate} from "@angular/router"
+    export class UnsaveGuard  implements CanDeactivate<ProductComponent>{
+    canDeactivate(component:ProductComponent){
+      
+    return Window.confirm("您还没有保存，确定要离开吗")
+       }
+     }
+    ------------------------
+    路由激活
+    {path:"product",component:ProductComponent,
+    children:[{
+      path:"",component:ProductdscComponent
+    },
+      {path:"saller/:id",component:SallerComponent}
+    ],canActivate:[LoginGuard] //路由护卫类型
+      canDeActivate:[UnsaveGuard]
+    },
+    ------------------
+    providers:[LoginGuard,UnsaveGuard]  //模块中依赖注入
+    --------------------------
+    Resolve守卫
+    
     子路由
 
     路由守卫 
@@ -203,7 +286,7 @@ whereis ls
      }]
 
      使用依赖注入，使其重复使用，在重复使用的组件中@Component中使用providers
-
+      
     
 
 
@@ -403,6 +486,8 @@ whereis ls
         可以直接对基本类型（int ,char double..）数组进行大小排序，也可以对包装类型（inreger,Character,Double..）进行大小排序
 
         Char型是根据ASCII排序的
+
+          
 
 
         
